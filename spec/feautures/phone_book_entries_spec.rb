@@ -23,10 +23,12 @@ feature 'Phone book entries page', js: true do
   context 'adding an entry' do
     scenario 'User adds an entry' do
       within '#PhoneBook' do
-        fill_in 'phone_book_entry_full_name',    with: 'Victor'
-        fill_in 'phone_book_entry_phone_number', with: '5346-4234'
+        within '.Form' do
+          fill_in 'phone_book_entry_full_name',    with: 'Victor'
+          fill_in 'phone_book_entry_phone_number', with: '5346-4234'
 
-        click_button 'Add entry'
+          click_button 'Add entry'
+        end
 
         page.should have_content 'Full name Phone number
                                   A 3124344
@@ -38,7 +40,7 @@ feature 'Phone book entries page', js: true do
     end
 
     scenario 'User forgets to add name' do
-      within '#PhoneBook' do
+      within '#PhoneBook .Form' do
         fill_in 'phone_book_entry_full_name',    with: ''
         fill_in 'phone_book_entry_phone_number', with: '5346-4234'
 
@@ -50,7 +52,7 @@ feature 'Phone book entries page', js: true do
     end
 
     scenario 'User forgets to add phone_number' do
-      within '#PhoneBook' do
+      within '#PhoneBook .Form' do
         fill_in 'phone_book_entry_full_name',    with: 'Victor'
         fill_in 'phone_book_entry_phone_number', with: ''
 
@@ -58,6 +60,19 @@ feature 'Phone book entries page', js: true do
 
         page.should have_selector '#phone_book_entry_phone_number.error'
         page.should_not have_selector '#phone_book_entry_full_name.error'
+      end
+    end
+  end
+
+  context 'editin an entry' do
+    background do
+      all('#PhoneBook .Index tr').first.find('.Edit').click
+    end
+
+    scenario "form displays data" do
+      within '#PhoneBook .Form' do
+        page.find('#phone_book_entry_full_name').value.should be == 'A'
+        page.find('#phone_book_entry_phone_number').value.should be == '3124344'
       end
     end
   end

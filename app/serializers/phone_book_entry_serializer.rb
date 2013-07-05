@@ -1,6 +1,6 @@
 class PhoneBookEntrySerializer < ActiveModel::Serializer
   self.root = false
 
-  attributes :full_name, :phone_number, :errors, :valid?
+  attributes :id, :full_name, :phone_number, :errors, :valid?
 end
 
