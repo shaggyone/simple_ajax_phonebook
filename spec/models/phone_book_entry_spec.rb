@@ -24,4 +24,17 @@ CSV
     specify { entry_1.reload.phone_number.should be == '987654321' }
     specify { PhoneBookEntry.find_by_full_name('Alex').phone_number.should be == '876543210' }
   end
+
+  context "::to_csv" do
+    let!(:entry_1) { FactoryGirl.create :phone_book_entry, full_name: 'Victor', phone_number: '12345678' }
+    let!(:entry_2) { FactoryGirl.create :phone_book_entry, full_name: 'Basil',  phone_number: '23456789' }
+
+    it "returns correct CSV data" do
+      PhoneBookEntry.to_csv.should be == <<-CSV
+Full name;Phone number
+Victor;12345678
+Basil;23456789
+CSV
+    end
+  end
 end

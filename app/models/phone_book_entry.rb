@@ -11,4 +11,13 @@ class PhoneBookEntry < ActiveRecord::Base
       entry.save
     end
   end
+
+  def self.to_csv
+    CSV.generate col_sep: ';' do |csv|
+      csv << ['Full name', 'Phone number']
+      PhoneBookEntry.find_each do |entry|
+        csv << [entry.full_name, entry.phone_number]
+      end
+    end
+  end
 end

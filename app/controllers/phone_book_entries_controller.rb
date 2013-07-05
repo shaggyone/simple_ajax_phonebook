@@ -8,7 +8,7 @@ class PhoneBookEntriesController < ApplicationController
 
     respond_to do |format|
       format.json { render json: @phone_book_entries }
-      format.csv
+      format.csv  { render text: PhoneBookEntry.to_csv }
     end
   end
 
