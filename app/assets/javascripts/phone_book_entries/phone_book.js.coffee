@@ -21,7 +21,7 @@ class PhoneBook
     else
       @current_entry = {}
 
-    for name, value of _.extend({name: '', phone_number: ''}, @current_entry)
+    for name, value of _.extend({full_name: '', phone_number: ''}, @current_entry)
      @form_element.find("[name='phone_book_entry[#{name}]']").val(value)
 
   destroy_element: (element) ->
@@ -61,6 +61,7 @@ class PhoneBook
     @select_element $(e.currentTarget).parents('tr:first')
 
     false
+
 
   on_destroy_clicked: (e) ->
     @destroy_element $(e.currentTarget).parents('tr:first')

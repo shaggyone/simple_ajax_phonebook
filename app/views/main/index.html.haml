@@ -1,6 +1,10 @@
 .row
   .span8
-    %h1 Test Phonebook
+    %h1
+      Test Phonebook
+      %a.btn.btn-success{ href: phone_book_entries_path(format: :csv) }
+        %i.icon-download-alt
+        download
     #PhoneBook
       %table.table.table-stripped
         %thead

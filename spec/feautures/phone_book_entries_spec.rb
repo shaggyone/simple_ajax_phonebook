@@ -20,6 +20,20 @@ feature 'Phone book entries page', js: true do
     end
   end
 
+  pending "Find a way to test it" do
+  scenario 'User should be able to download phone book as csv file' do
+    click_link 'download'
+
+    page.text.should be == <<-CSV
+Full name;Phone number
+A;3124344
+B;4213423
+C;5342523
+D;6236343
+CSV
+  end
+  end
+
   context 'adding an entry' do
     scenario 'User adds an entry' do
       within '#PhoneBook' do
