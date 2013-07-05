@@ -133,4 +133,27 @@ feature 'Phone book entries page', js: true do
       end
     end
   end
+
+  context 'removing an entry' do
+    scenario "Removes corresponding entry if user confirms it" do
+      page.evaluate_script('window.confirm = function() { return true; }')
+      all('#PhoneBook .Index tr').first.find('.Destroy').click
+
+      page.should have_content 'Full name Phone number
+                                B 4213423
+                                C 5342523
+                                D 6236343'
+    end
+
+    scenario "Does not remove corresponding entry if user confirms it" do
+      page.evaluate_script('window.confirm = function() { return false; }')
+      all('#PhoneBook .Index tr').first.find('.Destroy').click
+
+      page.should have_content 'Full name Phone number
+                                A 3124344
+                                B 4213423
+                                C 5342523
+                                D 6236343'
+    end
+  end
 end
