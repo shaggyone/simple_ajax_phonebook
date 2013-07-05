@@ -22,10 +22,22 @@ class PhoneBookEntriesController < ApplicationController
 
   # PUT /phone_book_entries/:id
   def update
+    @phone_book_entry = PhoneBookEntry.find(params[:id])
+    @phone_book_entry.update_attributes params[:phone_book_entry]
+
+    respond_to do |format|
+      format.json { render json: @phone_book_entry }
+    end
   end
 
   # DELETE /phone_book_entries/:id
   def destroy
+    @phone_book_entry = PhoneBookEntry.find(params[:id])
+    @phone_book_entry.destroy
+
+    respond_to do |format|
+      format.json { render json: @phone_book_entry }
+    end
   end
 
   # POST /phone_book_entries/upload

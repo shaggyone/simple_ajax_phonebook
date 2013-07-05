@@ -27,7 +27,7 @@ feature 'Phone book entries page', js: true do
           fill_in 'phone_book_entry_full_name',    with: 'Victor'
           fill_in 'phone_book_entry_phone_number', with: '5346-4234'
 
-          click_button 'Add entry'
+          click_button 'Save entry'
         end
 
         page.should have_content 'Full name Phone number
@@ -44,7 +44,7 @@ feature 'Phone book entries page', js: true do
         fill_in 'phone_book_entry_full_name',    with: ''
         fill_in 'phone_book_entry_phone_number', with: '5346-4234'
 
-        click_button 'Add entry'
+        click_button 'Save entry'
 
         page.should have_selector '#phone_book_entry_full_name.error'
         page.should_not have_selector '#phone_book_entry_phone_number.error'
@@ -56,7 +56,7 @@ feature 'Phone book entries page', js: true do
         fill_in 'phone_book_entry_full_name',    with: 'Victor'
         fill_in 'phone_book_entry_phone_number', with: ''
 
-        click_button 'Add entry'
+        click_button 'Save entry'
 
         page.should have_selector '#phone_book_entry_phone_number.error'
         page.should_not have_selector '#phone_book_entry_full_name.error'
@@ -69,10 +69,67 @@ feature 'Phone book entries page', js: true do
       all('#PhoneBook .Index tr').first.find('.Edit').click
     end
 
-    scenario "form displays data" do
+    scenario "User sees form displays data" do
       within '#PhoneBook .Form' do
         page.find('#phone_book_entry_full_name').value.should be == 'A'
         page.find('#phone_book_entry_phone_number').value.should be == '3124344'
+      end
+    end
+
+    scenario 'Used updates data in table' do
+      within '#PhoneBook' do
+        within '.Form' do
+          fill_in 'phone_book_entry_full_name',    with: 'Victor'
+          fill_in 'phone_book_entry_phone_number', with: '5346-4234'
+
+          click_button 'Save entry'
+        end
+
+        page.should have_content 'Full name Phone number
+                                  Victor 5346-4234
+                                  B 4213423
+                                  C 5342523
+                                  D 6236343'
+      end
+    end
+
+    scenario 'User forgets to add name' do
+      within '#PhoneBook' do
+        within '.Form' do
+          fill_in 'phone_book_entry_full_name',    with: ''
+          fill_in 'phone_book_entry_phone_number', with: '5346-4234'
+
+          click_button 'Save entry'
+
+          page.should have_selector '#phone_book_entry_full_name.error'
+          page.should_not have_selector '#phone_book_entry_phone_number.error'
+        end
+
+        page.should have_content 'Full name Phone number
+                                  A 3124344
+                                  B 4213423
+                                  C 5342523
+                                  D 6236343'
+      end
+    end
+
+    scenario 'User forgets to add phone_number' do
+      within '#PhoneBook' do
+        within '.Form' do
+          fill_in 'phone_book_entry_full_name',    with: 'Victor'
+          fill_in 'phone_book_entry_phone_number', with: ''
+
+          click_button 'Save entry'
+
+          page.should have_selector '#phone_book_entry_phone_number.error'
+          page.should_not have_selector '#phone_book_entry_full_name.error'
+        end
+
+        page.should have_content 'Full name Phone number
+                                  A 3124344
+                                  B 4213423
+                                  C 5342523
+                                  D 6236343'
       end
     end
   end
