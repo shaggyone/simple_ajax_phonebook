@@ -4,6 +4,7 @@ class PhoneBook
     @index_element = @element.find('.Index')
     @item_template = @element.find(@index_element.data('template')).html()
     @form_element = @element.find('.Form')
+    @upload_form = @element.find('.FileUpload')
 
     @select_element null
 
@@ -45,6 +46,8 @@ class PhoneBook
       @append_entry entry
 
 
+
+
   prepare_entry_element: (entry) ->
     appended_element = $(_.template(@item_template, entry, { variable: 'phone_book_entry' }))
     appended_element.data('value', entry)
@@ -56,6 +59,7 @@ class PhoneBook
     @form_element.on 'submit', $.proxy(@on_form_submit, this)
     @index_element.on 'click', '.Edit', $.proxy(@on_edit_clicked, this)
     @index_element.on 'click', '.Destroy', $.proxy(@on_destroy_clicked, this)
+    @upload_form.on 'submit', $.proxy(@on_upload, this)
 
   on_edit_clicked: (e) ->
     @select_element $(e.currentTarget).parents('tr:first')
@@ -84,9 +88,31 @@ class PhoneBook
       return
     false
 
+  on_upload: (e) ->
+    @select_element null
+    if $(e.currentTarget).find('.UploadClassically').prop('checked')
+      return true
+    form_data = new FormData(e.currentTarget)
+    $.ajax(
+      url: e.currentTarget.action,
+      type: 'POST',
+      data: form_data,
+      cache: false,
+      processData: false,
+      contentType: false,
+      context: this,
+      xhr: ->
+        $.ajaxSettings.xhr()
+    ).done (data)->
+      @index_element.find('*').remove()
+
+      for entry in data['phone_book_entries']
+        @append_entry(entry)
+
+    e.currentTarget.reset()
+
+    false
+
 @phone_book = new PhoneBook($('#PhoneBook'))
 @phone_book.index()
-
-
-
 

@@ -24,6 +24,16 @@
         %button.btn.btn-primary
           Save entry
 
+      %form.FileUpload{ enctype: "multipart/form-data", action: upload_phone_book_entries_path, method: :post }
+        %p
+          %input{ name: 'file', type: 'file' }
+          %button.btn.btn-success
+            %i.icon-upload
+            Upload file
+        %p
+          %label
+            %input.UploadClassically{ type: 'checkbox' }
+            Upload classically
 
       %script.TableRow{ type: "text/x-tmpl" }
         %tr

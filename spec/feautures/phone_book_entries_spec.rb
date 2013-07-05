@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tempfile'
 
 feature 'Phone book entries page', js: true do
   background do
@@ -169,5 +170,44 @@ CSV
                                 C 5342523
                                 D 6236343'
     end
+  end
+
+
+  pending "does not work with phantomjs" do
+  context "uploading a new file" do
+    let(:csv) do
+      <<-CSV
+Full name;Phone number
+A;1111111
+B;2222222
+E;5555555
+CSV
+    end
+    let(:temp_file) do
+      f = Tempfile.open('csv', Rails.root.join('tmp'))
+      f.write csv
+      f
+    end
+
+    scenario "User uploads a new file with phones data" do
+      within "#PhoneBook" do
+        within ".FileUpload" do
+          attach_file 'file', temp_file.path
+          check 'Upload classically'
+          page.save_screenshot Rails.root.join('tmp', Time.now.strftime("%Y%m%d-%H%M%S-%6N-spec-failed.jpg")), full: true
+
+          click_button 'Upload file'
+          page.save_screenshot Rails.root.join('tmp', Time.now.strftime("%Y%m%d-%H%M%S-%6N-spec-failed.jpg")), full: true
+        end
+
+        page.should have_content 'Full name Phone number
+                                  A 1111111
+                                  B 2222222
+                                  C 5342523
+                                  D 6236343
+                                  E 5555555'
+      end
+    end
+  end
   end
 end

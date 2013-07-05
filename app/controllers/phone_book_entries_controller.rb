@@ -43,5 +43,13 @@ class PhoneBookEntriesController < ApplicationController
 
   # POST /phone_book_entries/upload
   def upload
+    PhoneBookEntry.import_csv File.read params[:file].tempfile
+
+    @phone_book_entries = PhoneBookEntry.all
+
+    respond_to do |format|
+      format.json { render json: @phone_book_entries }
+      format.html { redirect_to '/' }
+    end
   end
 end
