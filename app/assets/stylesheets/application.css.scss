@@ -13,3 +13,7 @@
 //@import "bootstrap_variables";
 @import "bootstrap";
 @import "bootstrap-responsive";
+
+input.error {
+  border: 1px solid red;
+}

@@ -13,6 +13,11 @@ class PhoneBookEntriesController < ApplicationController
 
   # POST /phone_book_entries
   def create
+    @phone_book_entry = PhoneBookEntry.create params[:phone_book_entry]
+
+    respond_to do |format|
+      format.json { render json: @phone_book_entry }
+    end
   end
 
   # PUT /phone_book_entries/:id

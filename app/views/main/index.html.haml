@@ -12,18 +12,13 @@
             %th
               &nbsp;
         %tbody.Index{ 'data-template' => '.TableRow' }
-        %tfoot.Form
-          %tr
-            %td.span3
-              %input.span3#phone_book_entry_full_name{ 'data-var' => 'phone_book_entry.full_name' }
-            %td.span3
-              %input.span3#phone_book_entry_phone_number{ 'data-var' => 'phone_book_entry.phone_number' }
-            %td.span2
-              %button.btn
-                Add entry
 
+      = form_for PhoneBookEntry.new, html: { class: 'CreateForm' } do |f|
+        = f.text_field :full_name
+        = f.text_field :phone_number
 
-
+        %button.btn.btn-primary
+          Add entry
 
 
       %script.TableRow{ type: "text/x-tmpl" }
