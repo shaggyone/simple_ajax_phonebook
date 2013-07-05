@@ -1,4 +1,12 @@
 TestTask2::Application.routes.draw do
+  root to: "main#index"
+
+  resources :phone_book_entries, only: [:index, :create, :update, :destroy] do
+    collection do
+      post :upload
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

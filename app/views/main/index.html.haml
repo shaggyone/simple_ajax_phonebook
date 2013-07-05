@@ -1,0 +1,36 @@
+.row
+  .span8
+    %h1 Test Phonebook
+    #PhoneBook
+      %table.table.table-stripped
+        %thead
+          %tr
+            %th.span3
+              Full name
+            %th.span3
+              Phone number
+            %th
+              &nbsp;
+        %tbody.Index{ 'data-template' => '.TableRow' }
+        %tfoot.Form
+          %tr
+            %td.span3
+              %input.span3#phone_book_entry_full_name{ 'data-var' => 'phone_book_entry.full_name' }
+            %td.span3
+              %input.span3#phone_book_entry_phone_number{ 'data-var' => 'phone_book_entry.phone_number' }
+            %td.span2
+              %button.btn
+                Add entry
+
+
+
+
+
+      %script.TableRow{ type: "text/x-tmpl" }
+        %tr
+          %td.span3
+            != "<%= phone_book_entry.full_name %>"
+          %td.span3
+            != "<%= phone_book_entry.phone_number %>"
+          %td.span2
+
